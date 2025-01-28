@@ -9,7 +9,8 @@ const createMockUsePokemon = (overrides = {}) => ({
   currentPokemon: {
     name: 'ivysaur',
     id: 1,
-    image: '',
+    image:
+      'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png',
   },
   isCover: false,
   options: [],

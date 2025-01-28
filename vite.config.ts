@@ -15,13 +15,6 @@ export default defineConfig({
       targets: ['defaults', 'not IE 11'],
       additionalLegacyPolyfills: ['regenerator-runtime/runtime'],
     }),
-    babel({
-      babelConfig: {
-        babelrc: false,
-        configFile: false,
-        plugins: ['@babel/plugin-transform-runtime'],
-      },
-    }),
   ],
   resolve: {
     alias: {

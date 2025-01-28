@@ -45,7 +45,6 @@ const usePokemon = () => {
   })
 
   const handlePokemonSelection = (pokemonName: string) => {
-    console.log('pokemonName', pokemonName)
     const currentPokemonValue = currentPokemon.value!.name
     const isPokemonGuessed = GamePorts.isPokemonGuessed(currentPokemonValue, pokemonName)
     if (isPokemonGuessed) {
