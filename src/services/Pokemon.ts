@@ -36,7 +36,7 @@ const getPokemon = async (pokemonId: number): Promise<Pokemon> => {
 
 const getPokemonTypes = async (pokemonType: number): Promise<string[]> => {
   const { pokemon } = (await enhancedFetch(`type/${pokemonType}`)) as PokemonTypeApiResponse
-  const types = pokemon.map(({ pokemon }) => pokemon.name).slice(0, 3)
+  const types = pokemon.map(({ pokemon }) => pokemon.name).slice(0, 4)
   return types
 }
 

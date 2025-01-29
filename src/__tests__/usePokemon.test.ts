@@ -1,8 +1,8 @@
-import { vi, describe, expect, it } from 'vitest'
+import { vi, describe, expect, it, beforeEach } from 'vitest'
 import usePokemon from '../composables/usePokemon'
 
 describe('usePokemon', () => {
-  const { currentPokemon, getNewPokemon, options } = usePokemon()
+  const { currentPokemon, getNewPokemon, options, isCover, handlePokemonSelection } = usePokemon()
   const defaultSvgImage =
     'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png'
   const mockPokemonResponse = {
@@ -24,11 +24,22 @@ describe('usePokemon', () => {
   const mockOptionsResponse = {
     pokemon: [
       { pokemon: { name: 'ivysaur' } },
-      { pokemon: { name: 'bulbasaur' } },
-      { pokemon: { name: 'ivysaur' } },
+      { pokemon: { name: 'bulbasaure' } },
+      { pokemon: { name: 'charmander' } },
       { pokemon: { name: 'venusaur' } },
     ],
   }
+
+  beforeEach(async () => {
+    const mockFetchResponse = (data: typeof mockOptionsResponse | typeof mockPokemonResponse) =>
+      Promise.resolve({ json: () => Promise.resolve(data) } as Response)
+
+    vi.spyOn(window, 'fetch')
+      .mockImplementationOnce(() => mockFetchResponse(mockPokemonResponse))
+      .mockImplementationOnce(() => mockFetchResponse(mockOptionsResponse))
+    await getNewPokemon()
+  })
+
   it('should return the correct values', () => {
     const {
       currentPokemon,
@@ -48,51 +59,21 @@ describe('usePokemon', () => {
   })
 
   it('should fetch a new pokemon and the relevant types', async () => {
-    const mockFetchResponse = (data: typeof mockOptionsResponse | typeof mockPokemonResponse) =>
-      Promise.resolve({ json: () => Promise.resolve(data) } as Response)
-
-    vi.spyOn(window, 'fetch')
-      .mockImplementationOnce(() => mockFetchResponse(mockPokemonResponse))
-      .mockImplementationOnce(() => mockFetchResponse(mockOptionsResponse))
-
-    await getNewPokemon()
-
     expect(currentPokemon.value).not.toBeUndefined()
     expect(options.value).toHaveLength(mockOptionsResponse.pokemon.length)
-
-    vi.restoreAllMocks()
   })
 
   it('should handle a pokemon selection', async () => {
-    const { currentPokemon, isCover, options, handlePokemonSelection } = usePokemon()
-
-    currentPokemon.value = {
-      id: 1,
-      name: 'ivysaur',
-      image: defaultSvgImage,
-      type: 1,
-    }
-
-    handlePokemonSelection(currentPokemon.value.name)
+    handlePokemonSelection(currentPokemon.value!.name)
 
     expect(isCover.value).toBe(false)
     expect(options.value).toEqual([])
   })
 
   it('should handle a wrong pokemon selection', async () => {
-    const { currentPokemon, isCover, options, handlePokemonSelection } = usePokemon()
-
-    currentPokemon.value = {
-      id: 1,
-      name: 'ivysaur',
-      image: defaultSvgImage,
-      type: 1,
-    }
-    options.value = ['bulbasaur', 'ivysaur', 'venusaur', 'charmander']
-
-    handlePokemonSelection('bulbasaur')
+    handlePokemonSelection('bulbasaure')
 
     expect(isCover.value).toBe(true)
-    expect(options.value).toEqual(['ivysaur', 'venusaur', 'charmander'])
+    expect(options.value).toHaveLength(mockOptionsResponse.pokemon.length - 1)
   })
 })

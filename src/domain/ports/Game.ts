@@ -1,16 +1,17 @@
-const getGameOptions = (currentlyPokemonName: string, allPokemonTypes: string[]): string[] => {
-  const options = [currentlyPokemonName, ...allPokemonTypes]
-  return options
-    .map((val) => ({ val, sort: Math.random() }))
-    .sort((a, b) => a.sort - b.sort)
-    .map(({ val }) => val)
+const generateOptions = (correct: string, available: string[]): string[] => {
+  const options = [correct]
+  const shuffledAvailable = available
+    .filter((name) => name.toLowerCase() !== correct.toLowerCase())
+    .sort(() => Math.random() - 0.5)
+
+  return [...options, ...shuffledAvailable.slice(0, 3)].sort(() => Math.random() - 0.5)
 }
 
-const isPokemonGuessed = (currentlyPokemonName: string, choice: string): boolean => {
-  return currentlyPokemonName === choice
+const validateGuess = (correct: string, guess: string): boolean => {
+  return correct.toLowerCase() === guess.toLowerCase()
 }
 
 export const GamePorts = {
-  getGameOptions,
-  isPokemonGuessed,
+  generateOptions,
+  validateGuess,
 }
