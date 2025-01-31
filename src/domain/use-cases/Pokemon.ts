@@ -1,6 +1,6 @@
 import { PokemonService } from '@/services/Pokemon'
 
-export const PokemonPorts = {
+export const PokemonUseCases = {
   getPokemon: (id: number) => PokemonService.getPokemon(id),
   getPokemonTypes: (type: number) => PokemonService.getPokemonTypes(type),
 }

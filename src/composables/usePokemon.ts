@@ -1,6 +1,6 @@
 import { ref, watch, computed } from 'vue'
-import { PokemonPorts } from '@/domain/ports/Pokemon'
-import { GamePorts } from '@/domain/ports/Game'
+import { PokemonUseCases } from '@/domain/use-cases/Pokemon'
+import { GameUseCases } from '@/domain/use-cases/Game'
 import type { Pokemon } from '@/domain/models/Pokemon'
 
 type GameEvent = 'correct' | 'incorrect' | 'timeout'
@@ -42,7 +42,7 @@ const usePokemon = () => {
     gameState.value.error = null
 
     try {
-      const pokemon = await PokemonPorts.getPokemon(getRandomPokemonId())
+      const pokemon = await PokemonUseCases.getPokemon(getRandomPokemonId())
       gameState.value.currentPokemon = pokemon
     } catch (error) {
       const err = error instanceof Error ? error : new Error('Error desconocido')
@@ -59,9 +59,9 @@ const usePokemon = () => {
     gameState.value.error = null
 
     try {
-      const types = await PokemonPorts.getPokemonTypes(getRandomTypeId())
+      const types = await PokemonUseCases.getPokemonTypes(getRandomTypeId())
       if (gameState.value.currentPokemon) {
-        gameState.value.options = GamePorts.generateOptions(
+        gameState.value.options = GameUseCases.getGameOptions(
           gameState.value.currentPokemon.name,
           types,
         )
@@ -117,7 +117,7 @@ const usePokemon = () => {
     if (!gameState.value.currentPokemon) return
 
     const currentPokemonValue = gameState.value.currentPokemon.name
-    const isPokemonGuessed = GamePorts.validateGuess(currentPokemonValue, pokemonName)
+    const isPokemonGuessed = GameUseCases.handlePokemonSelection(currentPokemonValue, pokemonName)
 
     if (isPokemonGuessed) {
       gameState.value.isCover = false

@@ -2,7 +2,7 @@ import 'core-js/stable'
 import 'regenerator-runtime/runtime'
 
 import { describe, it, vi, expect } from 'vitest'
-import PokemonLayout from '../layout/TheLayout.vue'
+import PokemonLayout from '@/layout/TheLayout.vue'
 import { mount } from '@vue/test-utils'
 import ConfettiExplosion from 'vue-confetti-explosion'
 
