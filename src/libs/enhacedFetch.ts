@@ -17,7 +17,6 @@ const handleJSONResponse = <T>(response: JSONResponse): Promise<T> => {
     .json<T>()
     .then((data) => data)
     .catch((error) => {
-      console.log('error', error)
       const customError: CustomError = {
         name: 'CustomError',
         message: 'An error occurred',
