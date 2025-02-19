@@ -1,6 +1,6 @@
 # pokeguestmon
 
-This template should help get you started developing with Vue 3 in Vite.
+This practice old project should help get you started developing with Vue 3 in Vite. (Old practice project with vue 3)
 
 ## Recommended IDE Setup
 
